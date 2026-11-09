@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prueba 0 - Afinador y analizador de acordes</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main>
+    <h1>Afinador y analizador de acordes</h1>
+
+    <!-- Selección de modo -->
+    <fieldset>
+      <legend>Modo</legend>
+      <label><input type="radio" name="mode" value="tuner" checked> Afinador</label>
+      <label><input type="radio" name="mode" value="chords"> Analizador de acordes</label>
+    </fieldset>
+
+    <button id="toggle-button" type="button">Empezar a escuchar</button>
+    <p id="error-message" class="error" role="alert"></p>
+
+    <!-- Panel del afinador -->
+    <section id="tuner-panel">
+      <h2>Afinador</h2>
+      <p id="tuner-note" class="reading">—</p>
+      <p id="tuner-status"></p>
+      <p id="tuner-detail" class="detail"></p>
+    </section>
+
+    <!-- Panel del analizador de acordes -->
+    <section id="chord-panel" hidden>
+      <h2>Analizador de acordes</h2>
+      <label for="chord-select">Acorde que vas a tocar:</label>
+      <select id="chord-select"></select>
+      <p id="chord-status"></p>
+      <ul id="chord-results"></ul>
+      <p id="chord-peaks" class="detail"></p>
+    </section>
+  </main>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

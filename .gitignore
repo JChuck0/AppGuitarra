@@ -1,0 +1,21 @@
+# Dependencias
+node_modules/
+backend/venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Builds
+frontend/dist/
+
+# Base de datos local y configuración privada
+*.db
+.env
+
+# Editor y sistema
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Apuntes personales
+apuntes/

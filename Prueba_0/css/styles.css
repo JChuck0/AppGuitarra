@@ -1,0 +1,98 @@
+/* Estilos básicos: la interfaz solo tiene que ser clara y funcional. */
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f4f4f4;
+  color: #222;
+  margin: 0;
+  padding: 16px;
+}
+
+main {
+  max-width: 520px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 24px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+h1 {
+  font-size: 1.4rem;
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 1.1rem;
+}
+
+fieldset {
+  margin-bottom: 16px;
+}
+
+fieldset label {
+  margin-right: 16px;
+}
+
+button,
+select {
+  font-size: 1rem;
+  padding: 8px 14px;
+}
+
+section {
+  margin-top: 16px;
+  border-top: 1px solid #ccc;
+}
+
+/* Lectura principal del afinador (la nota detectada) */
+.reading {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+#tuner-status {
+  font-size: 1.2rem;
+  font-weight: bold;
+  min-height: 1.5em;
+}
+
+.detail {
+  color: #666;
+  font-size: 0.9rem;
+  min-height: 1.2em;
+}
+
+#chord-results {
+  list-style: none;
+  padding: 0;
+}
+
+#chord-results li {
+  padding: 8px 10px;
+  margin-bottom: 4px;
+  border-left: 6px solid #bbb;
+  background-color: #f4f4f4;
+}
+
+/* Colores de estado, compartidos por los dos modos */
+.ok {
+  color: #1b7a2f;
+}
+
+.warning {
+  color: #b15c00;
+}
+
+.error {
+  color: #b3261e;
+}
+
+#chord-results li.ok {
+  border-left-color: #1b7a2f;
+}
+
+#chord-results li.error {
+  border-left-color: #b3261e;
+}
