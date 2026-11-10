@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app import models  # noqa: F401  (registra las tablas en Base)
 from app.core.config import FRONTEND_ORIGINS
 from app.database import Base, engine
+from app.routers import auth, usuarios
 
 
 # Lo que se ejecuta al arrancar el servidor: crear las tablas que falten.
@@ -30,6 +31,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(auth.router)
+app.include_router(usuarios.router)
 
 
 @app.get("/health")
