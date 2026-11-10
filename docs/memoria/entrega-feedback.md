@@ -130,7 +130,7 @@ He elegido una **metodología iterativa e incremental**, adaptada a un proyecto 
 **Justificación de las elecciones principales:**
 
 - **Web Audio API:** es nativa del navegador, no requiere instalar nada y da acceso directo a los datos de frecuencia del micrófono.
-- **Pitchy:** es la única librería externa de audio. Detectar con precisión la nota de una cuerda (sobre todo las graves) es complejo, y Pitchy lo resuelve de forma ligera. Los acordes se analizan con código propio sobre la ***Primera transformada de Fourier***
+- **Pitchy:** es la única librería externa de audio. Detectar con precisión la nota de una cuerda (sobre todo las graves) es complejo, y Pitchy lo resuelve de forma ligera. Los acordes se analizan con código propio sobre la **Transformada Rápida de Fourier (FFT)**.
 - **FastAPI:** cumple el mismo papel que Express o Django, pero trabaja de forma asíncrona de serie y valida los datos automáticamente con Pydantic. Está justificado en la propuesta del proyecto.
 - **MySQL:** base de datos relacional que conozco del ciclo, con Workbench para gestionarla y para generar el diagrama entidad-relación.
 - **Vite:** solo como servidor de desarrollo. El navegador solo permite usar el micrófono en `localhost` o con HTTPS.
