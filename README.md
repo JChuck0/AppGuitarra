@@ -8,7 +8,8 @@ Aplicación web para aprender a tocar la guitarra con ejercicios que se corrigen
 | --- | --- |
 | `frontend/` | HTML, Tailwind y JavaScript. Audio, evaluación de ejercicios e interfaz |
 | `backend/` | API REST con FastAPI. Usuarios, progreso y gamificación |
-| `content/` | Contenido de las cajas y ejercicios en JSON (todavía vacío) |
+| `content/` | Contenido de las cajas y ejercicios en JSON. Se carga en la base de datos al arrancar el backend |
+| `postman/` | Colección de Postman para probar la API |
 | `docs/` | Fichas de ejercicios y documentos de la memoria |
 | `Prueba_0/` | Prueba técnica del afinador y del analizador de acordes |
 
