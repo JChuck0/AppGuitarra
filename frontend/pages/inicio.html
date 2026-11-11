@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Guitarra - Inicio</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-gray-100 text-gray-900 min-h-screen p-4">
+  <header class="max-w-3xl mx-auto flex items-center justify-between mb-6">
+    <h1 class="text-xl font-bold">App Guitarra</h1>
+    <button id="logout" class="text-sm border rounded px-3 py-1 hover:bg-white">Cerrar sesión</button>
+  </header>
+
+  <main class="max-w-3xl mx-auto bg-white rounded-lg shadow p-6">
+    <h2 id="greeting" class="text-2xl font-semibold">Cargando...</h2>
+    <p id="home-error" class="text-red-700 mt-2 hidden"></p>
+  </main>
+
+  <script type="module" src="/src/ui/homeView.js"></script>
+</body>
+</html>

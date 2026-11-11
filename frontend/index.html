@@ -3,15 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>App Guitarra</title>
+  <title>App Guitarra - Entrar</title>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body class="bg-gray-100 text-gray-900 p-6">
-  <main class="max-w-xl mx-auto bg-white rounded shadow p-6">
-    <h1 class="text-2xl font-bold mb-4">App Guitarra</h1>
-    <p id="server-status">Comprobando el servidor...</p>
+<body class="bg-gray-100 text-gray-900 min-h-screen flex items-center justify-center p-4">
+  <main class="w-full max-w-sm bg-white rounded-lg shadow p-6">
+    <h1 class="text-2xl font-bold mb-1">App Guitarra</h1>
+    <p id="server-status" class="text-sm text-gray-500 mb-6">Comprobando el servidor...</p>
+
+    <!-- Formulario de inicio de sesión -->
+    <form id="login-form" class="space-y-4" novalidate>
+      <h2 class="text-lg font-semibold">Iniciar sesión</h2>
+      <label class="block">
+        <span class="text-sm">Email</span>
+        <input name="email" type="email" required autocomplete="email"
+          class="mt-1 w-full border rounded px-3 py-2">
+      </label>
+      <label class="block">
+        <span class="text-sm">Contraseña</span>
+        <input name="password" type="password" required autocomplete="current-password"
+          class="mt-1 w-full border rounded px-3 py-2">
+      </label>
+      <p class="form-error text-sm text-red-700 hidden"></p>
+      <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2 disabled:opacity-50">
+        Entrar
+      </button>
+      <p class="text-sm text-center">
+        ¿No tienes cuenta? <a href="#" id="show-register" class="text-blue-600 underline">Regístrate</a>
+      </p>
+    </form>
+
+    <!-- Formulario de registro (oculto al principio) -->
+    <form id="register-form" class="space-y-4 hidden" novalidate>
+      <h2 class="text-lg font-semibold">Crear cuenta</h2>
+      <label class="block">
+        <span class="text-sm">Nombre</span>
+        <input name="nombre" type="text" required maxlength="100" autocomplete="given-name"
+          class="mt-1 w-full border rounded px-3 py-2">
+      </label>
+      <label class="block">
+        <span class="text-sm">Email</span>
+        <input name="email" type="email" required autocomplete="email"
+          class="mt-1 w-full border rounded px-3 py-2">
+      </label>
+      <label class="block">
+        <span class="text-sm">Contraseña (mínimo 8 caracteres)</span>
+        <input name="password" type="password" required minlength="8" maxlength="72" autocomplete="new-password"
+          class="mt-1 w-full border rounded px-3 py-2">
+      </label>
+      <p class="form-error text-sm text-red-700 hidden"></p>
+      <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2 disabled:opacity-50">
+        Crear cuenta
+      </button>
+      <p class="text-sm text-center">
+        ¿Ya tienes cuenta? <a href="#" id="show-login" class="text-blue-600 underline">Inicia sesión</a>
+      </p>
+    </form>
   </main>
 
-  <script type="module" src="/src/main.js"></script>
+  <script type="module" src="/src/ui/authView.js"></script>
 </body>
 </html>
