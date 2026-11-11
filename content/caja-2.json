@@ -1,0 +1,46 @@
+{
+  "numero": 2,
+  "nombre": "Moverse",
+  "objetivo": "Al cerrarla podrás tocar canciones de tres acordes y hacer frases que acaban bien.",
+  "ejercicios": [
+    {
+      "id": "c2-oido-notas-cuerda5",
+      "modulo": "oido",
+      "titulo": "Notas naturales de la cuerda 5",
+      "tipo": "note_finding",
+      "perfil": "response",
+      "es_clave": true,
+      "bpm_objetivo": null,
+      "parametros": { "cuerdas": [5], "trastes": [0, 12], "naturales": true }
+    },
+    {
+      "id": "c2-acordes-g-c-dm",
+      "modulo": "acordes",
+      "titulo": "G, C y Dm limpios",
+      "tipo": "chord_strike",
+      "perfil": "chord_tempo",
+      "es_clave": true,
+      "bpm_objetivo": 70,
+      "parametros": { "acordes": ["G", "C", "Dm"], "golpes_por_acorde": 4 }
+    },
+    {
+      "id": "c2-punteo-pentatonica-3-tonos",
+      "modulo": "punteo",
+      "titulo": "Pentatónica en 3 tonalidades",
+      "tipo": "scale_run",
+      "perfil": "mono_tempo",
+      "es_clave": true,
+      "bpm_objetivo": 80,
+      "parametros": { "escala": "minor_pentatonic", "tonicas": ["A", "E", "G"], "posicion": 1, "figura": "corcheas" }
+    }
+  ],
+  "jam": {
+    "id": "c2-jam",
+    "titulo": "Jam 2: I - IV - V con rasgueo y solo",
+    "bpm_objetivo": 80,
+    "parametros": {
+      "acompanamiento": { "grados": ["I", "IV", "V"], "tonalidad": "G", "patron": "D DU UDU", "compases": 8 },
+      "solo": { "escala": "major_pentatonic", "tonica": "G", "terminar_en_tonica": true, "compases": 8 }
+    }
+  }
+}

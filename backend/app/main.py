@@ -4,12 +4,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app import models  # noqa: F401  (registra las tablas en Base)
+from app.content_loader import load_content
 from app.core.config import FRONTEND_ORIGINS
-from app.database import Base, engine
-from app.routers import auth, usuarios
+from app.database import Base, SessionLocal, engine
+from app.routers import auth, contenido, usuarios
 
 
-# Lo que se ejecuta al arrancar el servidor: crear las tablas que falten.
+# Lo que se ejecuta al arrancar el servidor: crear las tablas que falten y
+# cargar el contenido de los JSON.
 # Para este proyecto no hace falta una herramienta de migraciones: si cambia
 # una tabla en desarrollo, se borra y se vuelve a crear.
 # Se hace aquí y no al importar el fichero para que los tests no se
@@ -17,6 +19,8 @@ from app.routers import auth, usuarios
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
+    with SessionLocal() as db:
+        load_content(db)
     yield
 
 
@@ -34,6 +38,7 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(usuarios.router)
+app.include_router(contenido.router)
 
 
 @app.get("/health")

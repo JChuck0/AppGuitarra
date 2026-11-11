@@ -1,0 +1,46 @@
+{
+  "numero": 1,
+  "nombre": "Primeros sonidos",
+  "objetivo": "Al cerrarla podrás tocar dos acordes a tempo e improvisar con tres notas.",
+  "ejercicios": [
+    {
+      "id": "c1-oido-notas-cuerda6",
+      "modulo": "oido",
+      "titulo": "Notas naturales de la cuerda 6",
+      "tipo": "note_finding",
+      "perfil": "response",
+      "es_clave": true,
+      "bpm_objetivo": null,
+      "parametros": { "cuerdas": [6], "trastes": [0, 12], "naturales": true }
+    },
+    {
+      "id": "c1-acordes-cambio-em-am",
+      "modulo": "acordes",
+      "titulo": "Cambios Em - Am",
+      "tipo": "chord_change",
+      "perfil": "chord_tempo",
+      "es_clave": true,
+      "bpm_objetivo": 60,
+      "parametros": { "acordes": ["Em", "Am"], "golpes_por_acorde": 4, "compases": 4 }
+    },
+    {
+      "id": "c1-punteo-pulsacion-alterna",
+      "modulo": "punteo",
+      "titulo": "Pulsación alterna en una cuerda",
+      "tipo": "technique_loop",
+      "perfil": "mono_tempo",
+      "es_clave": true,
+      "bpm_objetivo": 70,
+      "parametros": { "cuerda": 6, "traste": 0, "figura": "corcheas", "compases": 4 }
+    }
+  ],
+  "jam": {
+    "id": "c1-jam",
+    "titulo": "Jam 1: Em - Am e improvisación con 3 notas",
+    "bpm_objetivo": 70,
+    "parametros": {
+      "acompanamiento": { "acordes": ["Em", "Am"], "figura": "negras", "compases": 8 },
+      "solo": { "escala": "minor_pentatonic", "tonica": "A", "notas": ["A", "C", "D"], "compases": 4 }
+    }
+  }
+}
