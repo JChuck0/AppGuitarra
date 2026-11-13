@@ -19,6 +19,7 @@ export default defineConfig({
       input: {
         main: page('./index.html'),
         inicio: page('./pages/inicio.html'),
+        herramientas: page('./pages/herramientas.html'),
       },
     },
   },

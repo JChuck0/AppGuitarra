@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Guitarra - Herramientas</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-gray-100 text-gray-900 min-h-screen p-4">
+  <header class="max-w-3xl mx-auto flex items-center justify-between mb-6">
+    <h1 class="text-xl font-bold">Herramientas</h1>
+    <a href="/pages/inicio.html" class="text-sm border rounded px-3 py-1 hover:bg-white">Volver al inicio</a>
+  </header>
+
+  <main class="max-w-3xl mx-auto space-y-6">
+    <section class="bg-white rounded-lg shadow p-6">
+      <p class="text-sm text-gray-600 mb-4">
+        Para usar el afinador y el analizador de acordes hay que dar permiso al micrófono.
+      </p>
+      <button id="toggle-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded px-4 py-2">
+        Empezar a escuchar
+      </button>
+      <p id="error-message" class="text-red-700 mt-2"></p>
+
+      <div class="flex gap-4 mt-4 text-sm">
+        <label><input type="radio" name="mode" value="tuner" checked> Afinador</label>
+        <label><input type="radio" name="mode" value="chords"> Acordes</label>
+      </div>
+    </section>
+
+    <!-- Afinador -->
+    <section id="tuner-panel" class="bg-white rounded-lg shadow p-6 text-center">
+      <h2 class="text-lg font-semibold mb-4 text-left">Afinador</h2>
+      <p id="tuner-note" class="text-4xl font-bold">-</p>
+      <p id="tuner-status" class="mt-2"></p>
+      <p id="tuner-detail" class="text-sm text-gray-500 mt-1"></p>
+      <p id="note-detail" class="text-sm text-gray-500 mt-4"></p>
+    </section>
+
+    <!-- Analizador de acordes -->
+    <section id="chord-panel" class="bg-white rounded-lg shadow p-6" hidden>
+      <h2 class="text-lg font-semibold mb-4">Analizador de acordes</h2>
+      <label class="text-sm">
+        Acorde:
+        <select id="chord-select" class="border rounded px-2 py-1 ml-2"></select>
+      </label>
+      <p id="chord-status" class="text-sm text-gray-600 mt-4"></p>
+      <ul id="chord-results" class="mt-2 space-y-1"></ul>
+      <p id="chord-peaks" class="text-xs text-gray-500 mt-4"></p>
+    </section>
+
+    <!-- Prueba de micrófono -->
+    <section class="bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-2">Prueba de micrófono</h2>
+      <p class="text-sm text-gray-600 mb-4">
+        Primero hay que estar unos segundos en silencio y después tocar unos acordes.
+        Así se comprueba el ruido de fondo, el volumen de la guitarra y si el micro satura.
+      </p>
+      <button id="mic-test-button" class="border border-blue-600 text-blue-700 hover:bg-blue-50 rounded px-4 py-2 disabled:opacity-50">
+        Probar el micrófono
+      </button>
+      <p id="mic-test-status" class="font-semibold mt-4"></p>
+      <ul id="mic-test-results" class="mt-2 space-y-1 text-sm"></ul>
+    </section>
+  </main>
+
+  <script type="module" src="/src/ui/toolsView.js"></script>
+</body>
+</html>
