@@ -15,7 +15,19 @@ Aplicación web para aprender a tocar la guitarra con ejercicios que se corrigen
 
 ## Cómo arrancarlo
 
-Hace falta Node.js y Python 3.11.
+Hace falta Node.js, Python 3.11 y MySQL 8.
+
+**Base de datos**
+
+Desde MySQL Workbench con el usuario root:
+
+```sql
+CREATE DATABASE guitarra CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'guitarra_app'@'localhost' IDENTIFIED BY 'contraseña';
+GRANT ALL PRIVILEGES ON guitarra.* TO 'guitarra_app'@'localhost';
+```
+
+Después se copia `backend/.env.example` como `backend/.env` y se pone la misma contraseña en `DATABASE_URL`. Las tablas y el contenido se crean solos al arrancar el backend.
 
 **Backend**
 
