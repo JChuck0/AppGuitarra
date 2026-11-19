@@ -118,3 +118,24 @@ export const LATENCY_MAX_DISTANCE_SEC = 0.25;
 
 // Mínimo de clics emparejados para dar la calibración por buena.
 export const LATENCY_MIN_PAIRS = 5;
+
+// ---------- Grabación de tomas ----------
+
+// Después de cada ataque se espera un poco antes de leer la nota, porque el
+// buffer del afinador (85 ms) todavía tiene el final de la nota anterior.
+// Se lee desde 30 ms hasta 150 ms después del ataque (o hasta el siguiente).
+export const MONO_PITCH_START_SEC = 0.03;
+export const MONO_PITCH_END_SEC = 0.15;
+
+// En los acordes se espera más: el buffer del analizador de acordes guarda
+// unos 0,68 s de audio, así que justo después del golpe todavía "oye" lo que
+// sonaba antes. Se leen las notas entre 0,1 s y 0,4 s después del ataque.
+export const CHORD_NOTES_START_SEC = 0.1;
+export const CHORD_NOTES_END_SEC = 0.4;
+
+// Una nota cuenta como parte del acorde si aparece en al menos la mitad de
+// los fotogramas leídos. Así un pico suelto de ruido no se cuela.
+export const CHORD_NOTE_MIN_SHARE = 0.5;
+
+// Duración de la toma de prueba de la página de herramientas.
+export const TEST_TAKE_SECONDS = 4;

@@ -85,6 +85,40 @@
       <p id="latency-saved" class="text-sm text-gray-500 mt-1"></p>
     </section>
 
+    <!-- Toma de prueba -->
+    <section class="bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-2">Grabar una toma de prueba</h2>
+      <p class="text-sm text-gray-600 mb-4">
+        Suena un compás de cuenta atrás con el tempo del metrónomo y después se graban 4 segundos.
+        Toca una nota o un acorde con cada clic y mira qué detecta la app.
+      </p>
+      <div class="flex flex-wrap items-center gap-4">
+        <label class="text-sm">
+          Qué vas a tocar:
+          <select id="take-mode" class="border rounded px-2 py-1 ml-2">
+            <option value="mono">Notas sueltas</option>
+            <option value="chord">Acordes</option>
+          </select>
+        </label>
+        <button id="take-button" class="border border-blue-600 text-blue-700 hover:bg-blue-50 rounded px-4 py-2 disabled:opacity-50">
+          Grabar toma (4 s)
+        </button>
+      </div>
+      <p id="take-status" class="font-semibold mt-4"></p>
+      <table class="w-full text-sm mt-2">
+        <thead class="text-left text-gray-500">
+          <tr>
+            <th class="py-1">#</th>
+            <th>Tiempo (s)</th>
+            <th>Notas</th>
+            <th>Confianza</th>
+            <th>Desfase con el clic</th>
+          </tr>
+        </thead>
+        <tbody id="take-results"></tbody>
+      </table>
+    </section>
+
     <!-- Prueba de micrófono -->
     <section class="bg-white rounded-lg shadow p-6">
       <h2 class="text-lg font-semibold mb-2">Prueba de micrófono</h2>

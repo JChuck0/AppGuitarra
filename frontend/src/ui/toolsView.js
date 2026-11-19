@@ -1,5 +1,6 @@
 // Página de herramientas (pages/herramientas.html): afinador, analizador de
-// acordes, metrónomo, calibración de latencia y prueba de micrófono. Aquí
+// acordes, metrónomo, calibración de latencia, toma de prueba y prueba de
+// micrófono. Aquí
 // solo se lee el micrófono y se pinta en pantalla; los cálculos están en
 // src/audio/.
 
@@ -10,18 +11,21 @@ import { startAudio, stopAudio, describeMicrophoneError } from '../audio/microph
 import { analyzeTuning, analyzeNote, isSilence, TUNING_STATUS } from '../audio/tuner.js';
 import { analyzeChord } from '../audio/chordDetector.js';
 import { measureFrame, analyzeLevels, describeLevels } from '../audio/micTest.js';
-import { createMetronome, getBeatTimes, clampBpm } from '../audio/metronome.js';
+import { createMetronome, getBeatTimes, getBeatDuration, clampBpm } from '../audio/metronome.js';
 import { detectOnsets, measureRecentRms } from '../audio/onsets.js';
 import { calculateLatency, pairClicksWithOnsets } from '../audio/latency.js';
+import { recordTake } from '../audio/recorder.js';
+import { TAKE_MODE } from '../audio/events.js';
 import {
   TUNER_MIN_CLARITY,
   MIC_TEST_SECONDS,
   LATENCY_BPM,
   LATENCY_COUNT_IN_BEATS,
   LATENCY_CLICKS,
+  TEST_TAKE_SECONDS,
 } from '../audio/constants.js';
 import { OPEN_VOICINGS, getVoicingNotes } from '../music/chords.js';
-import { toSpanishName } from '../music/notes.js';
+import { toSpanishName, midiToNote } from '../music/notes.js';
 
 const toggleButton = document.getElementById('toggle-button');
 const errorMessage = document.getElementById('error-message');
@@ -45,6 +49,10 @@ const beatLights = document.querySelectorAll('#beat-lights span');
 const latencyButton = document.getElementById('latency-button');
 const latencyStatus = document.getElementById('latency-status');
 const latencySaved = document.getElementById('latency-saved');
+const takeMode = document.getElementById('take-mode');
+const takeButton = document.getElementById('take-button');
+const takeStatus = document.getElementById('take-status');
+const takeResults = document.getElementById('take-results');
 
 // Texto y color de cada resultado del afinador.
 const TUNER_MESSAGES = {
@@ -71,6 +79,20 @@ let metronome = null;
 
 // Mientras dura la calibración: null o { frames, clickTimes }.
 let calibration = null;
+
+// Latencia guardada del usuario (ms), para corregir la toma de prueba.
+let savedLatencyMs = null;
+
+// true mientras se graba la toma de prueba.
+let recording = false;
+
+// La prueba de micrófono, la calibración y la toma de prueba usan el
+// micrófono a la vez, así que mientras dura una no se pueden lanzar las otras.
+function setBusy(isBusy) {
+  micTestButton.disabled = isBusy;
+  latencyButton.disabled = isBusy;
+  takeButton.disabled = isBusy;
+}
 
 // ---------- Afinador ----------
 
@@ -212,8 +234,7 @@ function showMicTestResult() {
 function finishMicTest() {
   showMicTestResult();
   micTest = null;
-  micTestButton.disabled = false;
-  latencyButton.disabled = false;
+  setBusy(false);
 }
 
 // La prueba tiene dos partes seguidas de MIC_TEST_SECONDS cada una. Mientras
@@ -226,8 +247,7 @@ async function startMicTest() {
     }
   }
 
-  micTestButton.disabled = true;
-  latencyButton.disabled = true;
+  setBusy(true);
   micTestResults.innerHTML = '';
   micTestStatus.className = 'font-semibold mt-4';
   micTestStatus.textContent = `Silencio, no toques nada (${MIC_TEST_SECONDS} s)...`;
@@ -287,6 +307,7 @@ function stopMetronome() {
 // ---------- Calibración de latencia ----------
 
 function showSavedLatency(latencyMs) {
+  savedLatencyMs = latencyMs;
   latencySaved.textContent = latencyMs === null
     ? 'Todavía no has calibrado la latencia.'
     : `Latencia guardada: ${latencyMs} ms`;
@@ -322,8 +343,7 @@ async function startCalibration() {
   }
 
   stopMetronome();
-  latencyButton.disabled = true;
-  micTestButton.disabled = true;
+  setBusy(true);
   latencyStatus.className = 'font-semibold mt-4';
 
   const totalBeats = LATENCY_COUNT_IN_BEATS + LATENCY_CLICKS;
@@ -349,8 +369,7 @@ async function finishCalibration() {
   const detected = pairClicksWithOnsets(calibration.clickTimes, onsetTimes).length;
   const latencyMs = calculateLatency(calibration.clickTimes, onsetTimes);
   calibration = null;
-  latencyButton.disabled = false;
-  micTestButton.disabled = false;
+  setBusy(false);
 
   if (latencyMs === null) {
     latencyStatus.textContent =
@@ -382,6 +401,105 @@ async function loadSavedLatency() {
   }
 }
 
+// ---------- Toma de prueba ----------
+
+// Distancia en ms del evento al clic más cercano. Positiva si llega tarde.
+function getOffsetFromBeat(eventTime, beatTimes) {
+  let closest = beatTimes[0];
+  for (const beat of beatTimes) {
+    if (Math.abs(eventTime - beat) < Math.abs(eventTime - closest)) {
+      closest = beat;
+    }
+  }
+  return Math.round((eventTime - closest) * 1000);
+}
+
+function formatNotes(midiNotes) {
+  if (midiNotes.length === 0) {
+    return '(no se reconoce)';
+  }
+  return midiNotes.map((midi) => toSpanishName(midiToNote(midi))).join(', ');
+}
+
+function addCell(row, text) {
+  const cell = document.createElement('td');
+  cell.className = 'py-1';
+  cell.textContent = text;
+  row.appendChild(cell);
+}
+
+function showTakeEvents(events, beatTimes) {
+  takeResults.innerHTML = '';
+  events.forEach((event, index) => {
+    const row = document.createElement('tr');
+    const offset = getOffsetFromBeat(event.time, beatTimes);
+    addCell(row, index + 1);
+    addCell(row, event.time.toFixed(2));
+    addCell(row, formatNotes(event.midi));
+    addCell(row, `${Math.round(event.confidence * 100)} %`);
+    addCell(row, `${offset > 0 ? '+' : ''}${offset} ms`);
+    takeResults.appendChild(row);
+  });
+}
+
+function showTakeBeat(beatNumber) {
+  if (beatNumber < LATENCY_COUNT_IN_BEATS) {
+    takeStatus.textContent = `Prepárate... ${LATENCY_COUNT_IN_BEATS - beatNumber}`;
+  } else {
+    takeStatus.textContent = 'Grabando...';
+  }
+}
+
+// Graba TEST_TAKE_SECONDS con el metrónomo y enseña los eventos detectados.
+// La cuenta atrás es de un compás de 4 tiempos, como la de la calibración.
+async function startTestTake() {
+  const bpm = clampBpm(Number(bpmInput.value));
+  if (bpm === null) {
+    return;
+  }
+  if (audio === null) {
+    await startListening();
+    if (audio === null) {
+      return;
+    }
+  }
+
+  stopMetronome();
+  setBusy(true);
+  recording = true;
+  takeResults.innerHTML = '';
+  takeStatus.className = 'font-semibold mt-4';
+
+  const takeBeats = Math.ceil(TEST_TAKE_SECONDS / getBeatDuration(bpm));
+  const takeMetronome = createMetronome(audio.audioContext);
+  const firstClick = takeMetronome.start({
+    bpm,
+    beats: LATENCY_COUNT_IN_BEATS + takeBeats,
+    onBeat: showTakeBeat,
+  });
+  const startTime = firstClick + LATENCY_COUNT_IN_BEATS * getBeatDuration(bpm);
+
+  const events = await recordTake({
+    audio,
+    mode: takeMode.value === 'chord' ? TAKE_MODE.CHORD : TAKE_MODE.MONO,
+    startTime,
+    durationSec: TEST_TAKE_SECONDS,
+    latencyMs: savedLatencyMs,
+  });
+
+  // Los golpes de la cuenta atrás no son de la toma.
+  const takeEvents = events.filter((event) => event.time > -getBeatDuration(bpm) / 2);
+  showTakeEvents(takeEvents, getBeatTimes(bpm, 0, takeBeats));
+
+  let summary = `${takeEvents.length} golpes detectados en ${takeBeats} clics.`;
+  if (savedLatencyMs === null) {
+    summary += ' Sin latencia calibrada: los tiempos no están corregidos.';
+  }
+  takeStatus.textContent = summary;
+  recording = false;
+  setBusy(false);
+}
+
 // ---------- Bucle y micrófono ----------
 
 function analysisLoop() {
@@ -389,6 +507,8 @@ function analysisLoop() {
     recordMicTestFrame();
   } else if (calibration !== null) {
     recordCalibrationFrame();
+  } else if (recording) {
+    // La toma de prueba lee el micrófono por su cuenta (recordTake).
   } else if (currentMode === 'tuner') {
     updateTuner();
   } else {
@@ -440,9 +560,9 @@ function showModePanel() {
 // ---------- Eventos ----------
 
 toggleButton.addEventListener('click', () => {
-  // Durante la prueba de micrófono o la calibración no se deja parar, para
-  // no cortarlas a medias.
-  if (micTest !== null || calibration !== null) {
+  // Durante la prueba de micrófono, la calibración o la toma no se deja
+  // parar, para no cortarlas a medias.
+  if (micTest !== null || calibration !== null || recording) {
     return;
   }
   if (audio === null) {
@@ -481,6 +601,8 @@ bpmInput.addEventListener('change', () => {
 });
 
 latencyButton.addEventListener('click', startCalibration);
+
+takeButton.addEventListener('click', startTestTake);
 
 // ---------- Estado inicial ----------
 
