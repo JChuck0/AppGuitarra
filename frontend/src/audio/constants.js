@@ -103,3 +103,18 @@ export const ONSET_RISE_RATIO = 2;
 // Tiempo mínimo entre dos ataques (segundos). Evita contar dos veces el mismo
 // golpe. A 80 BPM una semicorchea dura 0,19 s, así que cabe con margen.
 export const ONSET_MIN_GAP_SEC = 0.12;
+
+// ---------- Calibración de latencia ----------
+
+// Tempo y número de clics de la calibración. Antes suena un compás de cuenta
+// atrás que no se mide.
+export const LATENCY_BPM = 80;
+export const LATENCY_COUNT_IN_BEATS = 4;
+export const LATENCY_CLICKS = 8;
+
+// Un ataque solo se empareja con un clic si está a menos de esta distancia
+// (segundos). A 80 BPM los clics van cada 0,75 s, así que no se confunden.
+export const LATENCY_MAX_DISTANCE_SEC = 0.25;
+
+// Mínimo de clics emparejados para dar la calibración por buena.
+export const LATENCY_MIN_PAIRS = 5;

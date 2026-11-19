@@ -49,6 +49,42 @@
       <p id="chord-peaks" class="text-xs text-gray-500 mt-4"></p>
     </section>
 
+    <!-- Metrónomo -->
+    <section class="bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-4">Metrónomo</h2>
+      <div class="flex items-center gap-4">
+        <label class="text-sm">
+          BPM
+          <input id="bpm-input" type="number" min="40" max="220" value="80"
+            class="border rounded px-2 py-1 ml-2 w-20">
+        </label>
+        <button id="metronome-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded px-4 py-2">
+          Empezar
+        </button>
+      </div>
+      <!-- Una luz por cada tiempo del compás -->
+      <div id="beat-lights" class="flex gap-3 mt-4">
+        <span class="w-4 h-4 rounded-full bg-gray-300"></span>
+        <span class="w-4 h-4 rounded-full bg-gray-300"></span>
+        <span class="w-4 h-4 rounded-full bg-gray-300"></span>
+        <span class="w-4 h-4 rounded-full bg-gray-300"></span>
+      </div>
+    </section>
+
+    <!-- Calibración de latencia -->
+    <section class="bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-2">Calibración de latencia</h2>
+      <p class="text-sm text-gray-600 mb-4">
+        Sonará un compás de cuenta atrás y después 8 clics. Toca una cuerda al aire justo con cada clic.
+        Funciona mejor con auriculares, porque si el clic sale por los altavoces el micrófono también lo oye.
+      </p>
+      <button id="latency-button" class="border border-blue-600 text-blue-700 hover:bg-blue-50 rounded px-4 py-2 disabled:opacity-50">
+        Calibrar latencia
+      </button>
+      <p id="latency-status" class="font-semibold mt-4"></p>
+      <p id="latency-saved" class="text-sm text-gray-500 mt-1"></p>
+    </section>
+
     <!-- Prueba de micrófono -->
     <section class="bg-white rounded-lg shadow p-6">
       <h2 class="text-lg font-semibold mb-2">Prueba de micrófono</h2>

@@ -86,3 +86,8 @@ export function login(email, password) {
 export function getMe() {
   return request('/users/me');
 }
+
+// Guarda la latencia calibrada (en ms) en el usuario.
+export function updateLatency(latencyMs) {
+  return request('/users/me', { method: 'PATCH', body: { latencia_ms: latencyMs } });
+}
