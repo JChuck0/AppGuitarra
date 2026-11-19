@@ -85,3 +85,21 @@ export const CLIPPING_LEVEL = 0.99;
 // Tempos mínimo y máximo que se pueden poner en el metrónomo.
 export const METRONOME_MIN_BPM = 40;
 export const METRONOME_MAX_BPM = 220;
+
+// ---------- Detección de ataques ----------
+
+// Para detectar ataques se mide el volumen solo de las últimas 1024 muestras
+// del buffer (unos 21 ms). Con el buffer entero del afinador (85 ms) la subida
+// de volumen se suaviza y el ataque se detecta más tarde.
+export const ONSET_WINDOW_SIZE = 1024;
+
+// Número de fotogramas anteriores con los que se compara el volumen actual.
+export const ONSET_HISTORY_FRAMES = 3;
+
+// El volumen tiene que multiplicarse al menos por este valor respecto a la
+// media de los fotogramas anteriores para contar como ataque. Valor provisional.
+export const ONSET_RISE_RATIO = 2;
+
+// Tiempo mínimo entre dos ataques (segundos). Evita contar dos veces el mismo
+// golpe. A 80 BPM una semicorchea dura 0,19 s, así que cabe con margen.
+export const ONSET_MIN_GAP_SEC = 0.12;
