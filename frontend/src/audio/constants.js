@@ -79,3 +79,9 @@ export const MIC_MIN_LEVEL = 0.03;
 // Una muestra a este valor (o más) está en el límite de lo que puede
 // grabar el micrófono: el sonido sale distorsionado (satura).
 export const CLIPPING_LEVEL = 0.99;
+
+// ---------- Metrónomo ----------
+
+// Tempos mínimo y máximo que se pueden poner en el metrónomo.
+export const METRONOME_MIN_BPM = 40;
+export const METRONOME_MAX_BPM = 220;
